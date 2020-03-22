@@ -18,6 +18,12 @@ public class Assets {
     public static BufferedImage enemy;      // to store the enemy image
     public static BufferedImage ally;       // to store the ally image
     public static BufferedImage gameOver;   // to store the gameover image
+    public static BufferedImage sprites;    //to store the spritesheet
+    public static BufferedImage playerUp[]; // to store the animation of the movement right
+    public static BufferedImage playerDown[];   // to store the animation of the movement down
+    public static BufferedImage playerLeft[];   // to store the animation of the movement left
+    public static BufferedImage playerRight[];  // to store the animation of the movement right
+    public static BufferedImage playerIdle[];   //to sotre the animation of idle player
     public static SoundClip enemysound;     // to store the enemy sound
     public static SoundClip allysound;      // to store the ally sound
 
@@ -32,6 +38,25 @@ public class Assets {
         gameOver = ImageLoader.loadImage("/images/gameOver.jpg");
         enemysound = new SoundClip("/sounds/crash.wav");
         allysound = new SoundClip("/sounds/coin.wav");
+        
+        //load the sprites and corp
+        sprites = ImageLoader.loadImage("/images/Hero.png");
+        
+        SpriteSheet spritesheet = new SpriteSheet(sprites);
+        playerUp = new BufferedImage[3];
+        playerDown = new BufferedImage[3];
+        playerLeft = new BufferedImage[3];
+        playerRight = new BufferedImage[3];
+        playerIdle = new BufferedImage[3];
+        
+        //crop the spritesheet
+        for (int i = 0; i < 3; i++){
+            playerUp[i] = spritesheet.crop(i*24,0,24,32);
+            playerRight[i] = spritesheet.crop(i*24,32,24,32);
+            playerDown[i] = spritesheet.crop(i*24, 64, 24, 32);
+            playerLeft[i] = spritesheet.crop(i*24,96,24,32);
+            playerIdle[i] = spritesheet.crop(24, (i*32)+32, 24, 32);
+        }
     }
 
 }

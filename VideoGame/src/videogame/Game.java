@@ -140,7 +140,7 @@ public class Game implements Runnable {
          display = new Display(title, getWidth(), getHeight());  
          Assets.init();
          //init the player, enemy and ally positions and list
-         player = new Player(getWidth()/2-50, getHeight()/2-50, 1, 100, 100, this);
+         player = new Player(0, getHeight()+100, 1, 100, 100, this);
          enemies = new LinkedList();
          allies = new LinkedList();
          //set gameover false
@@ -154,7 +154,8 @@ public class Game implements Runnable {
          setScore(0);
          //((int)(Math.random()*b-a+1))+a b->upper limit a->lower limit
          //to have the number of enemies in the game
-         int randomEnemy = (int)((Math.random()*3)+6);   
+         int randomEnemy = (int)((Math.random()*3)+6);
+         randomEnemy = 0;
          for(int i = 1; i <= randomEnemy; i++){
              Enemy enemy = new Enemy((int)(Math.random()*getWidth()-100),
                      ((int) (Math.random()*getHeight())-500), 1, 
@@ -163,7 +164,8 @@ public class Game implements Runnable {
          }
          
          //to have the number of allie in the game
-         int randomAlly = (int)((Math.random()*6)+10);   
+         int randomAlly = (int)((Math.random()*6)+10);
+         randomAlly = 0;
          for(int i = 1; i <= randomAlly; i++){
              Ally ally = new Ally((int)(Math.random()*getWidth()-100),
                      ((int) (Math.random()*getHeight())+500), 1, 
