@@ -192,8 +192,13 @@ public class Player extends Item {
                     if (isMovingDown()) {
                         g.drawImage(animationDown.getCurrentFrame(), getX(), getY(), getWidth(), getHeight(), null);
                     } else {
-                        animationIdle.tick();
-                        g.drawImage(animationIdle.getCurrentFrame(), getX(), getY(), getWidth(), getHeight(), null);
+                        if(!game.isPause()){
+                            animationIdle.tick();
+                            g.drawImage(animationIdle.getCurrentFrame(), getX(), getY(), getWidth(), getHeight(), null);
+                        }
+                        else{
+                            g.drawImage(animationIdle.getCurrentFrame(), getX(), getY(), getWidth(), getHeight(), null);
+                        }
                     }
                 }
             }

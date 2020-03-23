@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.util.LinkedList;
+import videogame.ReadandWrite;
 
 /**
  *
@@ -31,6 +32,8 @@ public class Game implements Runnable {
     private int lives;              //player lives
     private int enemyCollisions;    //keep the times collision
     private boolean gameOver;       //game-over
+    private boolean pause;          //if the game is pause
+    private ReadandWrite saveload;  //for the file class
     
     
     /**
@@ -130,6 +133,22 @@ public class Game implements Runnable {
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
+
+    public boolean isPause() {
+        return pause;
+    }
+
+    public void setPause(boolean pause) {
+        this.pause = pause;
+    }
+
+    public LinkedList<Enemy> getEnemies() {
+        return enemies;
+    }
+
+    public LinkedList<Ally> getAllies() {
+        return allies;
+    }
     
     
     
@@ -137,7 +156,8 @@ public class Game implements Runnable {
      * initializing the display window of the game
      */
     private void init() {
-         display = new Display(title, getWidth(), getHeight());  
+         display = new Display(title, getWidth(), getHeight());
+         saveload = new ReadandWrite(this);
          Assets.init();
          //init the player, enemy and ally positions and list
          player = new Player(0, getHeight()+100, 1, 100, 100, this);
@@ -155,7 +175,7 @@ public class Game implements Runnable {
          //((int)(Math.random()*b-a+1))+a b->upper limit a->lower limit
          //to have the number of enemies in the game
          int randomEnemy = (int)((Math.random()*3)+6);
-         randomEnemy = 0;
+         //randomEnemy = 0;
          for(int i = 1; i <= randomEnemy; i++){
              Enemy enemy = new Enemy((int)(Math.random()*getWidth()-100),
                      ((int) (Math.random()*getHeight())-500), 1, 
@@ -165,7 +185,7 @@ public class Game implements Runnable {
          
          //to have the number of allie in the game
          int randomAlly = (int)((Math.random()*6)+10);
-         randomAlly = 0;
+         //randomAlly = 0;
          for(int i = 1; i <= randomAlly; i++){
              Ally ally = new Ally((int)(Math.random()*getWidth()-100),
                      ((int) (Math.random()*getHeight())+500), 1, 
@@ -213,51 +233,71 @@ public class Game implements Runnable {
     
     private void tick() {
         keyManager.tick();
-        // avancing player with colision
-        player.tick();
-        //move the enemies
-        for(Enemy enemy : enemies) {
-            enemy.tick();
-            
-            //to detect if there is a collision with an enemy
-            if (player.collision(enemy)) {
-                setEnemyCollisions(getEnemyCollisions()+1);
-                //change the number of collision and take away a life
-                if(getEnemyCollisions() == 3){
-                    setEnemyCollisions(0);
-                    setLives(getLives()-1);
-                }
-                //set the gameOver
-                if (getLives() == 0){
-                    setGameOver(true);
-                }
-                //restart the enemies
-                enemy.setX((int) (Math.random() * getWidth() - 100));
-                enemy.setY((int)(Math.random()*getHeight())-250);
-                //play the sound unless is gameOver
-                if(!isGameOver()){
-                    Assets.enemysound.play();
-                }
+        
+        if(keyManager.pause){
+            keyManager.shutP();
+            if(isPause()){
+                setPause(false);   
+            } else {
+                setPause(true);   
             }
         }
         
-        //movement of the allies
-        for(Ally ally : allies) {
-            ally.tick();
-            //check for collision
-            if (player.collision(ally)) {
-                //increse the score and reset position
-                setScore(getScore() + 10);
-                ally.setX((int) (Math.random() * getWidth() - 100));
-                ally.setY((int)(Math.random()*getHeight())+250);
-                //if is not gameOver play the sound
-                if(!isGameOver()){
-                    Assets.allysound.play();
+        if(keyManager.save) {
+            keyManager.shutS();
+            ReadandWrite.Save("save.txt", this, enemies, allies);
+        }
+        
+        if(keyManager.load) {
+            keyManager.shutC();
+            ReadandWrite.Load("save.txt", this, enemies, allies);
+        }
+        
+        if (!isPause()) {
+            //shut the p button
+            // avancing player with colision
+            player.tick();
+            //move the enemies
+            for (Enemy enemy : enemies) {
+                enemy.tick();
+                //to detect if there is a collision with an enemy
+                if (player.collision(enemy)) {
+                    setEnemyCollisions(getEnemyCollisions() + 1);
+                    //change the number of collision and take away a life
+                    if (getEnemyCollisions() == 3) {
+                        setEnemyCollisions(0);
+                        setLives(getLives() - 1);
+                    }
+                    //set the gameOver
+                    if (getLives() == 0) {
+                        setGameOver(true);
+                    }
+                    //restart the enemies
+                    enemy.setX((int) (Math.random() * getWidth() - 100));
+                    enemy.setY((int) (Math.random() * getHeight()) - 250);
+                    //play the sound unless is gameOver
+                    if (!isGameOver()) {
+                        Assets.enemysound.play();
+                    }
+                }
+            }
+
+            //movement of the allies
+            for (Ally ally : allies) {
+                ally.tick();
+                //check for collision
+                if (player.collision(ally)) {
+                    //increse the score and reset position
+                    setScore(getScore() + 10);
+                    ally.setX((int) (Math.random() * getWidth() - 100));
+                    ally.setY((int) (Math.random() * getHeight()) + 250);
+                    //if is not gameOver play the sound
+                    if (!isGameOver()) {
+                        Assets.allysound.play();
+                    }
                 }
             }
         }
-        
-        
     }
         
     private void render() {
