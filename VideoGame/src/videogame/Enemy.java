@@ -15,17 +15,15 @@ public class Enemy extends Item{
 
     private int direction;
     private Game game;
-    private boolean floor;
-    private int score;
+    private Animation animationleft;
     private int speed;
-    private boolean init=true;
-    private int floorCoins;
     
     //constructor
     public Enemy(int x, int y, int direction, int width, int height, Game game) {
         super(x, y, width, height);
         this.direction = direction;
         this.game = game;
+        this.animationleft = new Animation(Assets.EnemyLeft, 100);
         
     }
     
@@ -40,21 +38,6 @@ public class Enemy extends Item{
         this.direction = direction;
     }
 
-    public boolean isFloor() {
-        return floor;
-    }
-
-    public void setFloor(boolean floor) {
-        this.floor = floor;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
 
     public int getSpeed() {
         return speed;
@@ -64,36 +47,16 @@ public class Enemy extends Item{
         this.speed = speed;
     }
 
-    public boolean isInit() {
-        return init;
-    }
-
-    public void setInit(boolean init) {
-        this.init = init;
-    }
-
-    public int getFloorCoins() {
-        return floorCoins;
-    }
-
-    public void setFloorCoins(int floorCoins) {
-        this.floorCoins = floorCoins;
-    }
-
 
     @Override
     public void tick() {
         //initialization
-        if(isInit()){
-            setInit(false);
-            setFloor(false);
-            setSpeed(1);
-            setFloorCoins(0);
-        }
+
         int random = (int)((Math.random()*3)+3);  
         setSpeed(random);
         // moving enemy
-        setY(getY()+getSpeed());
+        setX(getX()-getSpeed());
+        animationleft.tick();
         
         // reset x position and y position if colision
         if (getX() + 60 >= game.getWidth()) {
@@ -101,12 +64,12 @@ public class Enemy extends Item{
         }
         else if (getX() <= -30) {
             setX(-30);
+            setY(((int)(Math.random()*game.getHeight())));
+            setX((int)(Math.random()*game.getWidth()+300));
         }
         
         if (getY() + 80 >= game.getHeight()) {
             setY(game.getHeight() - 80);
-            setY(((int)(Math.random()*game.getHeight()))-350);
-            setX((int)(Math.random()*game.getWidth()-100));
             //setSpeed(getSpeed()+1);
             //setFloorCoins(getFloorCoins() + 1);
         }
@@ -119,6 +82,7 @@ public class Enemy extends Item{
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.enemy, getX(), getY(), getWidth(), getHeight(), null);
+        
+        g.drawImage(animationleft.getCurrentFrame(), getX(), getY(), getWidth(), getHeight(), null);
     }
 }

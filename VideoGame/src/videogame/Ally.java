@@ -15,18 +15,15 @@ public class Ally extends Item{
 
     private int direction;
     private Game game;
-    private boolean roof;
-    private int score;
+    private Animation animationRight;
     private int speed;
-    private boolean init=true;
-    private int floorCoins;
     
     //Contructor
     public Ally(int x, int y, int direction, int width, int height, Game game) {
         super(x, y, width, height);
         this.direction = direction;
         this.game = game;
-        
+        this.animationRight = new Animation(Assets.AllyRight, 100);
     }
 
     //Setter and getters
@@ -39,22 +36,6 @@ public class Ally extends Item{
         this.direction = direction;
     }
 
-    public boolean isRoof() {
-        return roof;
-    }
-
-    public void setRoof(boolean roof) {
-        this.roof = roof;
-    }    
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     public int getSpeed() {
         return speed;
     }
@@ -63,40 +44,19 @@ public class Ally extends Item{
         this.speed = speed;
     }
 
-    public boolean isInit() {
-        return init;
-    }
-
-    public void setInit(boolean init) {
-        this.init = init;
-    }
-
-    public int getFloorCoins() {
-        return floorCoins;
-    }
-
-    public void setFloorCoins(int floorCoins) {
-        this.floorCoins = floorCoins;
-    }
-
 
     @Override
     public void tick() {
-        //initialization
-        if(isInit()){
-            setInit(false);
-            setRoof(false);
-            setSpeed(1);
-            setFloorCoins(0);
-        }
         int random = (int)((Math.random()*3)+2);  
         setSpeed(random);
         // moving ally
-        setY(getY()-getSpeed());
-        
+        setX(getX()+getSpeed());
+        animationRight.tick();
         // reset x position and y position if colision
         if (getX() + 60 >= game.getWidth()) {
             setX(game.getWidth() - 60);
+            setY(((int)(Math.random()*game.getHeight())));
+            setX((int)(Math.random()*game.getWidth()-300));
         }
         else if (getX() <= -30) {
             setX(-30);
@@ -110,13 +70,11 @@ public class Ally extends Item{
         */
         else if (getY() <= -20) {
             setY(-20);
-            setY((int)(Math.random()*game.getHeight())+350);
-            setX((int)(Math.random()*game.getWidth()-100));
         }
     }
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.ally, getX(), getY(), getWidth(), getHeight(), null);
+        g.drawImage(animationRight.getCurrentFrame(), getX(), getY(), getWidth(), getHeight(), null);
     }
 }

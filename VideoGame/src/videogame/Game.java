@@ -160,7 +160,7 @@ public class Game implements Runnable {
          saveload = new ReadandWrite(this);
          Assets.init();
          //init the player, enemy and ally positions and list
-         player = new Player(0, getHeight()+100, 1, 100, 100, this);
+         player = new Player(0, getHeight()+100, 1, 70, 70, this);
          enemies = new LinkedList();
          allies = new LinkedList();
          //set gameover false
@@ -175,20 +175,20 @@ public class Game implements Runnable {
          //((int)(Math.random()*b-a+1))+a b->upper limit a->lower limit
          //to have the number of enemies in the game
          int randomEnemy = (int)((Math.random()*3)+6);
-         //randomEnemy = 0;
+         //randomEnemy = 2;
          for(int i = 1; i <= randomEnemy; i++){
-             Enemy enemy = new Enemy((int)(Math.random()*getWidth()-100),
-                     ((int) (Math.random()*getHeight())-500), 1, 
+             Enemy enemy = new Enemy((int)(Math.random()*getWidth()+300),
+                     ((int) (Math.random()*getHeight())), 1, 
                  100, 100, this);
              enemies.add(enemy);
          }
          
          //to have the number of allie in the game
          int randomAlly = (int)((Math.random()*6)+10);
-         //randomAlly = 0;
+         //randomAlly = 2;
          for(int i = 1; i <= randomAlly; i++){
-             Ally ally = new Ally((int)(Math.random()*getWidth()-100),
-                     ((int) (Math.random()*getHeight())+500), 1, 
+             Ally ally = new Ally((int)(Math.random()*getWidth()-300),
+                     ((int) (Math.random()*getHeight())), 1, 
                  100, 100, this);
              allies.add(ally);
          }
@@ -273,8 +273,8 @@ public class Game implements Runnable {
                         setGameOver(true);
                     }
                     //restart the enemies
-                    enemy.setX((int) (Math.random() * getWidth() - 100));
-                    enemy.setY((int) (Math.random() * getHeight()) - 250);
+                    enemy.setX((int) (Math.random() * getWidth() + 300));
+                    enemy.setY((int) (Math.random() * getHeight()));
                     //play the sound unless is gameOver
                     if (!isGameOver()) {
                         Assets.enemysound.play();
@@ -289,8 +289,8 @@ public class Game implements Runnable {
                 if (player.collision(ally)) {
                     //increse the score and reset position
                     setScore(getScore() + 10);
-                    ally.setX((int) (Math.random() * getWidth() - 100));
-                    ally.setY((int) (Math.random() * getHeight()) + 250);
+                    ally.setX((int) (Math.random() * getWidth() - 300));
+                    ally.setY((int) (Math.random() * getHeight()));
                     //if is not gameOver play the sound
                     if (!isGameOver()) {
                         Assets.allysound.play();
