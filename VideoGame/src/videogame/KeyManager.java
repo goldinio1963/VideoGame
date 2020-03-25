@@ -53,7 +53,7 @@ public class KeyManager implements KeyListener {
         left = keys[KeyEvent.VK_LEFT];
         right = keys[KeyEvent.VK_RIGHT];
         pause = keys[KeyEvent.VK_P];
-        save = keys[KeyEvent.VK_S];
+        save = keys[KeyEvent.VK_G];
         load = keys[KeyEvent.VK_C];
     }
     
@@ -63,7 +63,7 @@ public class KeyManager implements KeyListener {
     }
     
     public void shutS() {
-        keys[KeyEvent.VK_S] = false;
+        keys[KeyEvent.VK_G] = false;
     }
     
     public void shutC() {
