@@ -15,7 +15,7 @@ import java.util.LinkedList;
 
 /**
  *
- * @author antoniomejorado
+ * @author adolfo
  */
 public class ReadandWrite {
     private Game game;  //game class object
@@ -24,7 +24,15 @@ public class ReadandWrite {
         this.game = game;
     }
     
-        
+    
+    /**
+     * This mehtod save all the positions of the enemies/allies, the hero
+     * and save the score and lives when the key s is pressed
+     * @param strFileName name of the file
+     * @param game calling the game itself to acces the elements
+     * @param enemies to have acces to all the enemies in the linkedlist
+     * @param allies to have acces to all the allies in the linkedlist
+     */
     public static void Save(String strFileName, Game game, LinkedList<Enemy> enemies, LinkedList<Ally> allies) {
         try {
             PrintWriter writer = new PrintWriter(new FileWriter(strFileName));
@@ -54,6 +62,14 @@ public class ReadandWrite {
 
     }
 
+    /**
+     * To load the save last of the game, all the position are restored, the
+     * score and lives are also restored
+     * @param strFileName name of the file
+     * @param game the game to acces the elements
+     * @param enemies to have acces to the enemies
+     * @param allies to have acces to the allies
+     */
     public static void Load(String strFileName, Game game, LinkedList<Enemy> 
             enemies, LinkedList<Ally> allies) {
         try {

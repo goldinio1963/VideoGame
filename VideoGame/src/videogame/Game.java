@@ -157,7 +157,7 @@ public class Game implements Runnable {
      */
     private void init() {
          display = new Display(title, getWidth(), getHeight());
-         saveload = new ReadandWrite(this);
+         //saveload = new ReadandWrite(this);
          Assets.init();
          //init the player, enemy and ally positions and list
          player = new Player(0, getHeight()+100, 1, 70, 70, this);
@@ -234,6 +234,7 @@ public class Game implements Runnable {
     private void tick() {
         keyManager.tick();
         
+        //check if pause waas selected
         if(keyManager.pause){
             keyManager.shutP();
             if(isPause()){
@@ -243,16 +244,19 @@ public class Game implements Runnable {
             }
         }
         
+        //flag for save the game
         if(keyManager.save) {
             keyManager.shutS();
             ReadandWrite.Save("save.txt", this, enemies, allies);
         }
         
+        //flag for load the game
         if(keyManager.load) {
             keyManager.shutC();
             ReadandWrite.Load("save.txt", this, enemies, allies);
         }
         
+        //if pause then it doesnt update the game
         if (!isPause()) {
             //shut the p button
             // avancing player with colision
@@ -322,6 +326,7 @@ public class Game implements Runnable {
                 enemy.render(g);
             }
             //show the score and lives
+            bs.getDrawGraphics().setColor(Color.red);
             bs.getDrawGraphics().drawString("Score: " +String.valueOf(getScore()), 20, 50);
             bs.getDrawGraphics().drawString("Lives: "+String.valueOf(getLives()), 20, 20);
             //bs.getDrawGraphics().setColor(Color.red);

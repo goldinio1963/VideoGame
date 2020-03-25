@@ -51,7 +51,7 @@ public class Enemy extends Item{
     @Override
     public void tick() {
         //initialization
-
+        //speed and animation
         int random = (int)((Math.random()*3)+3);  
         setSpeed(random);
         // moving enemy

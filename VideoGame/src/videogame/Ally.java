@@ -47,6 +47,7 @@ public class Ally extends Item{
 
     @Override
     public void tick() {
+        //speed and animation
         int random = (int)((Math.random()*3)+2);  
         setSpeed(random);
         // moving ally
