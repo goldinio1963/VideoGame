@@ -16,6 +16,7 @@ import videogame.ReadandWrite;
  * @author Adolfo
  */
 public class Game implements Runnable {
+
     private BufferStrategy bs;      // to have several buffers when displaying
     private Graphics g;             // to paint objects
     private Display display;        // to display in the game
@@ -34,13 +35,13 @@ public class Game implements Runnable {
     private boolean gameOver;       //game-over
     private boolean pause;          //if the game is pause
     private ReadandWrite saveload;  //for the file class
-    
-    
+
     /**
      * to create title, width and height and set the game is still not running
+     *
      * @param title to set the title of the window
      * @param width to set the width of the window
-     * @param height  to set the height of the window
+     * @param height to set the height of the window
      */
     public Game(String title, int width, int height) {
         this.title = title;
@@ -56,6 +57,7 @@ public class Game implements Runnable {
 
     /**
      * To get the width of the game window
+     *
      * @return an <code>int</code> value with the width
      */
     public int getWidth() {
@@ -64,6 +66,7 @@ public class Game implements Runnable {
 
     /**
      * To get the height of the game window
+     *
      * @return an <code>int</code> value with the height
      */
     public int getHeight() {
@@ -72,6 +75,7 @@ public class Game implements Runnable {
 
     /**
      * To get the score of the game window
+     *
      * @return an <code>int</code> value with the score
      */
     public int getScore() {
@@ -80,6 +84,7 @@ public class Game implements Runnable {
 
     /**
      * To set the score
+     *
      * @param score of the game
      */
     public void setScore(int score) {
@@ -88,6 +93,7 @@ public class Game implements Runnable {
 
     /**
      * To get the lives of the game window
+     *
      * @return an <code>int</code> value with the lives
      */
     public int getLives() {
@@ -96,7 +102,8 @@ public class Game implements Runnable {
 
     /**
      * to set lives
-     * @param lives of the player 
+     *
+     * @param lives of the player
      */
     public void setLives(int lives) {
         this.lives = lives;
@@ -104,6 +111,7 @@ public class Game implements Runnable {
 
     /**
      * To get the times the player have collision
+     *
      * @return an <code>int</code> value with the times collision
      */
     public int getEnemyCollisions() {
@@ -112,14 +120,16 @@ public class Game implements Runnable {
 
     /**
      * to set the times a player collision with an enemy
-     * @param enemyCollisions of the player with an enemy 
+     *
+     * @param enemyCollisions of the player with an enemy
      */
     public void setEnemyCollisions(int enemyCollisions) {
         this.enemyCollisions = enemyCollisions;
     }
-    
+
     /**
      * To get if it is a gameOver
+     *
      * @return an <code>boolean</code> if is a gameOver
      */
     public boolean isGameOver() {
@@ -128,6 +138,7 @@ public class Game implements Runnable {
 
     /**
      * to set the boolean
+     *
      * @param gameOver if the reach a gameOver
      */
     public void setGameOver(boolean gameOver) {
@@ -149,53 +160,51 @@ public class Game implements Runnable {
     public LinkedList<Ally> getAllies() {
         return allies;
     }
-    
-    
-    
+
     /**
      * initializing the display window of the game
      */
     private void init() {
-         display = new Display(title, getWidth(), getHeight());
-         //saveload = new ReadandWrite(this);
-         Assets.init();
-         //init the player, enemy and ally positions and list
-         player = new Player(0, getHeight()+100, 1, 70, 70, this);
-         enemies = new LinkedList();
-         allies = new LinkedList();
-         //set gameover false
-         setGameOver(false);
-         //set the collision to 0
-         setEnemyCollisions(0);
-         //set the lives random from 5-7
-         int randomLives = (int)((Math.random()*3)+5);
-         setLives(randomLives);
-         //set the score to 0
-         setScore(0);
-         //((int)(Math.random()*b-a+1))+a b->upper limit a->lower limit
-         //to have the number of enemies in the game
-         int randomEnemy = (int)((Math.random()*3)+6);
-         //randomEnemy = 2;
-         for(int i = 1; i <= randomEnemy; i++){
-             Enemy enemy = new Enemy((int)(Math.random()*getWidth()+300),
-                     ((int) (Math.random()*getHeight())), 1, 
-                 100, 100, this);
-             enemies.add(enemy);
-         }
-         
-         //to have the number of allie in the game
-         int randomAlly = (int)((Math.random()*6)+10);
-         //randomAlly = 2;
-         for(int i = 1; i <= randomAlly; i++){
-             Ally ally = new Ally((int)(Math.random()*getWidth()-300),
-                     ((int) (Math.random()*getHeight())), 1, 
-                 100, 100, this);
-             allies.add(ally);
-         }
-         
-         display.getJframe().addKeyListener(keyManager);
+        display = new Display(title, getWidth(), getHeight());
+        //saveload = new ReadandWrite(this);
+        Assets.init();
+        //init the player, enemy and ally positions and list
+        player = new Player(0, getHeight() + 100, 1, 70, 70, this);
+        enemies = new LinkedList();
+        allies = new LinkedList();
+        //set gameover false
+        setGameOver(false);
+        //set the collision to 0
+        setEnemyCollisions(0);
+        //set the lives random from 5-7
+        int randomLives = (int) ((Math.random() * 3) + 5);
+        setLives(randomLives);
+        //set the score to 0
+        setScore(0);
+        //((int)(Math.random()*b-a+1))+a b->upper limit a->lower limit
+        //to have the number of enemies in the game
+        int randomEnemy = (int) ((Math.random() * 3) + 6);
+        //randomEnemy = 2;
+        for (int i = 1; i <= randomEnemy; i++) {
+            Enemy enemy = new Enemy((int) (Math.random() * getWidth() + 300),
+                    ((int) (Math.random() * getHeight())), 1,
+                    100, 100, this);
+            enemies.add(enemy);
+        }
+
+        //to have the number of allie in the game
+        int randomAlly = (int) ((Math.random() * 6) + 10);
+        //randomAlly = 2;
+        for (int i = 1; i <= randomAlly; i++) {
+            Ally ally = new Ally((int) (Math.random() * getWidth() - 300),
+                    ((int) (Math.random() * getHeight())), 1,
+                    100, 100, this);
+            allies.add(ally);
+        }
+
+        display.getJframe().addKeyListener(keyManager);
     }
-    
+
     @Override
     public void run() {
         init();
@@ -216,12 +225,12 @@ public class Game implements Runnable {
             delta += (now - lastTime) / timeTick;
             // updating the last time
             lastTime = now;
-            
+
             // if delta is positive we tick the game
             if (delta >= 1) {
                 tick();
                 render();
-                delta --;
+                delta--;
             }
         }
         stop();
@@ -230,35 +239,35 @@ public class Game implements Runnable {
     public KeyManager getKeyManager() {
         return keyManager;
     }
-    
+
     private void tick() {
         keyManager.tick();
-        
+
         //check if pause waas selected
-        if(keyManager.pause){
+        if (keyManager.pause) {
             keyManager.shutP();
-            if(isPause()){
-                setPause(false);   
+            if (isPause()) {
+                setPause(false);
             } else {
-                setPause(true);   
+                setPause(true);
             }
         }
-        
-        //flag for save the game
-        if(keyManager.save) {
-            keyManager.shutS();
-            ReadandWrite.Save("save.txt", this, enemies, allies);
-        }
-        
-        //flag for load the game
-        if(keyManager.load) {
-            keyManager.shutC();
-            ReadandWrite.Load("save.txt", this, enemies, allies);
-        }
-        
+
         //if pause then it doesnt update the game
         if (!isPause()) {
-            //shut the p button
+            if (!isGameOver()) {
+                //flag for save the game
+                if (keyManager.save) {
+                    keyManager.shutS();
+                    ReadandWrite.Save("save.txt", this, enemies, allies);
+                }
+
+                //flag for load the game
+                if (keyManager.load) {
+                    keyManager.shutC();
+                    ReadandWrite.Load("save.txt", this, enemies, allies);
+                }
+            }
             // avancing player with colision
             player.tick();
             //move the enemies
@@ -303,7 +312,7 @@ public class Game implements Runnable {
             }
         }
     }
-        
+
     private void render() {
         // get the buffer strategy from the display
         bs = display.getCanvas().getBufferStrategy();
@@ -312,12 +321,10 @@ public class Game implements Runnable {
         after clearing the Rectanlge, getting the graphic object from the 
         buffer strategy element. 
         show the graphic and dispose it to the trash system
-        */
+         */
         if (bs == null) {
             display.getCanvas().createBufferStrategy(3);
-        }
-        else
-        {
+        } else {
             g = bs.getDrawGraphics();
             g.drawImage(Assets.background, 0, 0, width, height, null);
             player.render(g);
@@ -327,26 +334,29 @@ public class Game implements Runnable {
             }
             //show the score and lives
             bs.getDrawGraphics().setColor(Color.red);
-            bs.getDrawGraphics().drawString("Score: " +String.valueOf(getScore()), 20, 50);
-            bs.getDrawGraphics().drawString("Lives: "+String.valueOf(getLives()), 20, 20);
+            bs.getDrawGraphics().drawString("Score: " + String.valueOf(getScore()), 20, 50);
+            bs.getDrawGraphics().drawString("Lives: " + String.valueOf(getLives()), 20, 20);
             //bs.getDrawGraphics().setColor(Color.red);
-            
+
+            if(isPause()){
+                bs.getDrawGraphics().drawString("PAUSE", getWidth()/2, getHeight()/2);
+            }
             //show the allies in the game
             for (Ally ally : allies) {
                 ally.render(g);
             }
             //change to a gameOver screen
-            if(gameOver){
+            if (gameOver) {
+                //ReadandWrite.Save("save.txt", this, enemies, allies);
                 g.drawImage(Assets.gameOver, 0, 0, width, height, null);
             }
-            
+
             bs.show();
             g.dispose();
         }
-       
+
     }
-    
-    
+
     /**
      * setting the thead for the game
      */
@@ -357,7 +367,7 @@ public class Game implements Runnable {
             thread.start();
         }
     }
-    
+
     /**
      * stopping the thread
      */
@@ -368,10 +378,8 @@ public class Game implements Runnable {
                 thread.join();
             } catch (InterruptedException ie) {
                 ie.printStackTrace();
-            }           
+            }
         }
     }
-    
-
 
 }
